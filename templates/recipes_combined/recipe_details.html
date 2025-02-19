@@ -1,62 +1,58 @@
 {% extends 'base_layout.html' %}
-{% block body_id %}recipes-list{% endblock %}
-{% block body_class %}recipes-list-class{% endblock %}
+{% block body_id %}recipes-details{% endblock %}
+{% block body_class %}recipes-details-class{% endblock %}
 {% block content %}
 {% load static %}
-<div class="recipes-list-container">
-    <div class="category-menu">
-        <ul>
-            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=chicken&recipe_kind=ar">Chicken AR</a></li>
-            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=beef&recipe_kind=epi">Beef EPI</a></li>
-            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=egg&recipe_kind=fn">Egg FN</a></li>
-            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=christmas&recipe_kind=ar">Christmas AR</a></li>
-            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=fish&recipe_kind=epi">Fish EPI</a></li>
-            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=grill&recipe_kind=fn">Grill FN</a></li>
-        </ul>
-    </div>
-    <a href="{% url 'home_page' %}" class="back-button">Back to home page</a>
-    <div class="search-section">
-        <h1>Find Your Next Recipe</h1>
-        <form class="search-field" method="get" action="{% url 'recipes_combined:recipes_list' %}">
-            <input class="search-input" type="search" placeholder="Search recipes..." aria-label="Search" name="search"
-                   value="{{ search_query }}">
-            <button type="submit" class="search-button">Search</button>
-        </form>
-    </div>
-    <div id="recipe-list" class="recipe-grid">
-        {% if no_recipes %}
-        <p class="no-recipes-message">No recipes found. Try searching for something else!</p>
-        {% else %}
-        {% for recipe in page_obj.object_list %}
-        <div class="recipe-card">
-            <a href="{% url 'recipes_combined:recipe_details_with_path' recipe.recipe_id %}">
-                <div class="recipe-card-details">
-                    <h2 class="recipe-card-title">{{ recipe.title }}</h2>
-                </div>
-            </a>
-            {% if user.is_authenticated %}
-            <button class="favorite-button" data-recipe-id="{{ recipe.recipe_id }}" data-app-name="recipes_combined">
+<div class="recipe-details-container">
+    <div class="recipe-header">
+        <h1 class="recipe-title">{{ recipe.title }}</h1>
+        <a href="{% url 'recipes_combined:recipes_list' %}?recipe_kind={{ recipe.recipe_kind }}" class="back-button">Back to Recipe List</a>
+        {% if user.is_authenticated %}
+        <button class="favorite-button" data-recipe-id="{{ recipe.recipe_id }}" data-app-name="recipes_combined">
                 <span class="material-icons">
-                    {{ recipe.is_favorited|yesno:"favorite, favorite_border" }}
+                    {{ is_favorited|yesno:"favorite,favorite_border" }}
                 </span>
-            </button>
+        </button>
+        {% endif %}
+    </div>
+    <div class="recipe-body">
+        <div class="recipe-section">
+            <h2>Ingredients:</h2>
+            {% if recipe.ingredients %}
+            <ul class="ingredients-list">
+                {% for ingredient in recipe.ingredients %}
+                <li>{{ ingredient }}</li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="no-ingredients">No ingredients available for this recipe.</p>
             {% endif %}
         </div>
-        {% endfor %}
-        {% endif %}
+        <div class="recipe-section">
+            <h2>Instructions:</h2>
+            <p class="instructions-text">{{ recipe.instructions }}</p>
+        </div>
     </div>
-    <div class="pagination">
-        {% if page_obj.has_previous %}
-        <a href="?search={{ search_query }}&category={{ category }}&recipe_kind={{ recipe_kind }}&page=1" class="pagination-link">1</a>
-        <a href="?search={{ search_query }}&category={{ category }}&recipe_kind={{ recipe_kind }}&page={{ page_obj.previous_page_number }}"
-           class="pagination-link">Prev</a>
-        {% endif %}
-        <span class="current-page">{{ page_obj.number }}</span>
-        {% if page_obj.has_next %}
-        <a href="?search={{ search_query }}&category={{ category }}&recipe_kind={{ recipe_kind }}&page={{ page_obj.next_page_number }}"
-           class="pagination-link">Next</a>
-        <a href="?search={{ search_query }}&category={{ category }}&recipe_kind={{ recipe_kind }}&page={{ page_obj.paginator.num_pages }}"
-           class="pagination-link">{{ page_obj.paginator.num_pages }}</a>
+    <div class="comments-section">
+        <h2>Comments</h2>
+        {% for comment in comments %}
+        <div class="comment">
+            <p><strong>{{ comment.author }} ({{ comment.created_at|date:"F j, Y, g:i a" }}):</strong><br>{{ comment.content }}</p>
+        </div>
+        {% empty %}
+        <p>No comments yet. Be the first to comment!</p>
+        {% endfor %}
+        {% if user.is_authenticated %}
+        <div class="comment-form">
+            <h2>Add a Comment</h2>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+        {% else %}
+        <p><a href="{% url 'accounts:login' %}">Log in</a> to add a comment.</p>
         {% endif %}
     </div>
 </div>
