@@ -1,9 +1,12 @@
 import os
 from pathlib import Path
+from decouple import config
+
 
 # Base directory path
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+CONTACT_EMAIL = config('CONTACT_EMAIL')
 
 # Security settings
 SECRET_KEY = 'django-insecure-o8rf%xt$i8)om80tv48q*$o-70h*##_1h&=((#!40j1y#0bkz0'
@@ -18,11 +21,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'about_us',
+    'home_page',
     'accounts',
+    'about_us',
     'contact_us',
     'favorites',
-    'home_page',
     'recipes_combined',
 ]
 

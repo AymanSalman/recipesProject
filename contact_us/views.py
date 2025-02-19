@@ -1,8 +1,7 @@
-import os
-
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from .forms import ContactForm
+from django.conf import settings
 
 def contact_us(request):
     if request.method == 'POST':
@@ -15,7 +14,7 @@ def contact_us(request):
                 subject=f"Contact Us Message from {name}",
                 message=message,
                 from_email=email,
-                recipient_list=[os.environ.get('CONTACT_EMAIL')],
+                recipient_list=[settings.CONTACT_EMAIL],
             )
             return redirect('contact_us_thanks')
     else:
