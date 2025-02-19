@@ -1,0 +1,26 @@
+{% extends 'base_layout.html' %}
+{% block content %}
+<div class="signup-container">
+    <h1 class="signup-header">Signup</h1>
+    <div class="panel-container">
+        <div class="signup-panel">
+            <h2>Create an Account</h2>
+            <p>Join us and enjoy all the benefits!</p>
+            <form class="site-signup-form" action="{% url 'accounts:signup' %}" method="post">
+                {% csrf_token %}
+                <div class="form-fields">
+                    {{ form }}
+                </div>
+                <input type="submit" value="Signup">
+            </form>
+        </div>
+    </div>
+</div>
+<div id="welcome-popup" class="popup-container" data-redirect-url="{% url 'home_page' %}">
+    <div class="popup-content">
+        <h2 class="popup-header">Welcome!</h2>
+        <p>Your account has been created successfully.</p>
+        <button id="welcome-ok-btn" class="popup-ok-button">OK</button>
+    </div>
+</div>
+{% endblock %}
