@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayman Salman Site</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body id="{% block body_id %}default-body{% endblock %}" class="{% block body_class %}default{% endblock %}">
+<header class="header-container">
+    <a href="/" class="header-logo"><h1 class="animated-text">Enjoy</h1></a>
+    <div class="header-right">
+        <a href="{% url 'about_us' %}" class="about-us-btn">
+            <span class="material-icons">info</span> About Us
+        </a>
+        <span class="separator">&nbsp;&nbsp;-&nbsp;&nbsp;</span>
+        <a href="{% url 'contact_us' %}" class="btn-contact-us">
+            <span class="material-icons">mail</span> Contact Us
+        </a>
+        <div class="dropdown">
+            {% if user.is_authenticated %}
+            <span class="separator">&nbsp;&nbsp;-&nbsp;&nbsp;</span>
+            <a href="{% url 'favorites:favorites_page' user.id %}" class="favorites-link">
+                <span class="material-icons">favorite</span> Favorites
+            </a>
+            <button class="dropbtn">
+                <span class="material-icons">menu</span>
+            </button>
+            <div class="dropdown-content">
+                <li>
+                    <form class="logout-link" action="{% url 'accounts:logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-logout">
+                            <span class="material-icons">logout</span> Logout
+                        </button>
+                    </form>
+                </li>
+            </div>
+            {% else %}
+            <button class="dropbtn">
+                <span class="material-icons">menu</span>
+            </button>
+            <div class="dropdown-content">
+                <a href="{% url 'accounts:login' %}" class="btn-login">
+                    <span class="material-icons">login</span> Login
+                </a>
+                <a href="{% url 'accounts:signup' %}" class="btn-signup">
+                    <span class="material-icons">person_add</span> Signup
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</header>
+<div class="video-background">
+    <video autoplay muted loop class="background-video">
+        <source src="{% static 'vedio_background.mp4' %}" type="video/mp4">
+    </video>
+</div>
+<main>
+    <script>
+        const csrfToken = "{{ csrf_token }}";
+    </script>
+    {% block content %}
+    {% endblock %}
+</main>
+</body>
+</html>
