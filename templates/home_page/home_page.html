@@ -1,0 +1,28 @@
+{% extends 'base_layout.html' %}
+{% block body_id %}home-page{% endblock %}
+{% block body_class %}home-page-class{% endblock %}
+{% block content %}
+<div class="home-page-container">
+    <div class="home-header">
+        <h1>Welcome to Our Recipe Collections</h1>
+        <p>Discover delicious recipes from around the world.</p>
+    </div>
+    <div class="home-buttons-container">
+        <div class="home-recipe-card">
+            <h2>Recipes AR</h2>
+            <p>Explore authentic and delightful Arabic recipes.</p>
+            <a href="{% url 'recipes_combined:recipes_list' %}?recipe_kind=ar" class="button explore-button-ar">Explore Recipes AR</a>
+        </div>
+        <div class="home-recipe-card">
+            <h2>Recipes EPI</h2>
+            <p>Find exquisite recipes inspired by Epicurious.</p>
+            <a href="{% url 'recipes_combined:recipes_list' %}?recipe_kind=epi" class="button explore-button-epi">Explore Recipes EPI</a>
+        </div>
+        <div class="home-recipe-card">
+            <h2>Recipes FN</h2>
+            <p>Discover Food Network’s curated recipe collection.</p>
+            <a href="{% url 'recipes_combined:recipes_list' %}?recipe_kind=fn" class="button explore-button-fn">Explore Recipes FN</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
