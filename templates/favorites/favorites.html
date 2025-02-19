@@ -1,0 +1,97 @@
+<!-- favorites/templates/favorites/favorites_page.html -->
+
+{% extends 'base_layout.html' %}
+{% block body_id %}favorites-page{% endblock %}
+{% block body_class %}favorites-page-class{% endblock %}
+{% block content %}
+<div class="favorites-page-container">
+    <h1>Your Favorite Recipes</h1>
+    <p>Here you can find all your favorite recipes collected in one place. Click on any recipe to view its details.</p>
+
+    {% if favorites %}
+    <table class="favorite-recipes-table">
+        <thead>
+        <tr>
+            <th>Recipe Title</th>
+            <th>Recipe Type</th>
+            <th>Toggle</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for favorite in favorites %}
+        <tr>
+            <td>
+                {% if favorite.recipe_app == 'recipes_fn' %}
+                <a href="{% url 'recipes_fn:recipe_details_fn' favorite.recipe_id %}">
+                    {{ favorite.recipe.title }}
+                </a>
+                {% elif favorite.recipe_app == 'recipes_ar' %}
+                <a href="{% url 'recipes_ar:recipe_details_ar' favorite.recipe_id %}">
+                    {{ favorite.recipe.title }}
+                </a>
+                {% elif favorite.recipe_app == 'recipes_epi' %}
+                <a href="{% url 'recipes_epi:recipe_details_epi' favorite.recipe_id %}">
+                    {{ favorite.recipe.title }}
+                </a>
+                {% endif %}
+            </td>
+            <td>{{ favorite.recipe_app }}</td>
+            <td>
+                <button class="toggle-favorite-button" data-recipe-id="{{ favorite.recipe_id }}"
+                        data-recipe-app="{{ favorite.recipe_app }}">
+                                <span class="material-icons">
+                                    favorite
+                                </span>
+                </button>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>You have no favorite recipes yet.</p>
+    {% endif %}
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const csrfToken = "{{ csrf_token }}";
+        console.log("DOM fully loaded and parsed");
+
+        const toggleButtons = document.querySelectorAll('.toggle-favorite-button');
+        console.log(`Found ${toggleButtons.length} toggle buttons`);
+
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                const recipeId = this.getAttribute('data-recipe-id');
+                const recipeApp = this.getAttribute('data-recipe-app');
+                console.log(`Toggling favorite for recipe ID: ${recipeId} from app: ${recipeApp}`);
+
+                fetch(`/${recipeApp}/${recipeId}/toggle_favorite/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': csrfToken,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    console.log("Fetch response received");
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(`Response data: ${JSON.stringify(data)}`);
+                    if (!data.is_favorited) {
+                        // Remove the row from the table
+                        console.log(`Removing row for recipe ID: ${recipeId}`);
+                        this.closest('tr').remove();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+</script>
+{% endblock %}
