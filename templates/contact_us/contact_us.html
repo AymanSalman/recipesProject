@@ -1,0 +1,16 @@
+{% extends 'base_layout.html' %}
+{% block content %}
+<div class="contact-container">
+    <h1 class="contact-header">Contact Us</h1>
+    <div class="contact-panel">
+        <h2>Send us a message</h2>
+        <form method="post" class="contact-form">
+            {% csrf_token %}
+            <div class="form-fields">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="submit-button">Send Message</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

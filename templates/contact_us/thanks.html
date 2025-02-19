@@ -1,0 +1,15 @@
+{% extends 'base_layout.html' %}
+{% block content %}
+<div class="thank-you-container">
+    <h1 class="thank-you-header">Thank you for reaching out to us!</h1>
+    <p class="thank-you-message">The admin will reply to you as soon as possible.</p>
+</div>
+<script>
+    setTimeout(function() {
+        document.querySelector('.thank-you-container').style.opacity = '0';
+    }, 3000);
+    setTimeout(function() {
+        window.location.href = '/';
+    }, 4000);
+</script>
+{% endblock %}
