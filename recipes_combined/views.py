@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from .models import Recipe, Favorite
@@ -46,25 +45,21 @@ def recipe_details(request, recipe_id):
             return redirect('recipes_combined:recipe_details', recipe_id=recipe_id)
     else:
         form = CommentForm()
-    return render(request, 'recipes_combined/recipe_details.html', {
-        'recipe': recipe,
-        'comments': comments,
-        'form': form,
-        'is_favorited': is_favorited
-    })
+    return render(request, 'recipes_combined/recipe_details.html',
+    {'recipe': recipe,'comments': comments,'form': form,'is_favorited': is_favorited})
 
 def toggle_favorite(request, recipe_id):
     if not request.user.is_authenticated:
         return JsonResponse({'error': 'User not authenticated'}, status=403)
     try:
         recipe = Recipe.objects.get(_id=ObjectId(recipe_id))
-        favorite, created = Favorite.objects.get_or_create(user=request.user, recipe=recipe, defaults={'recipe_type': recipe.recipe_kind})
+        favorite, created = (Favorite.objects.get_or_create
+                (user=request.user, recipe=recipe, defaults={'recipe_type': recipe.recipe_kind}))
         if not created:
             favorite.delete()
             is_favorited = False
         else:
             is_favorited = True
-
         return JsonResponse({'is_favorited': is_favorited})
     except Recipe.DoesNotExist:
         return JsonResponse({'error': 'Recipe not found'}, status=404)

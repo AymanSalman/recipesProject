@@ -3,6 +3,7 @@ from djongo import models
 from django.contrib.auth.models import User
 
 class Recipe(models.Model):
+    DoesNotExist = None
     _id = models.ObjectIdField(primary_key=True)
     title = models.CharField(max_length=255)
     ingredients = models.JSONField()
