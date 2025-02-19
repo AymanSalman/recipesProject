@@ -1,0 +1,42 @@
+{% extends "base_layout.html" %}
+{% block content %}
+<div class="about-us-content">
+    <h2>About Us</h2>
+    <p>Welcome to our website! We are a collection of recipes sourced from three popular culinary sites:</p>
+    <p>Each of the following sites has been carefully chosen for their high-quality recipes and diverse culinary offerings:</p>
+    <div class="site-description">
+        <h3>Foodnetwork.com</h3>
+        <p><a href="https://www.foodnetwork.com" target="_blank">Foodnetwork.com</a> is a premier destination for all things food. It offers a variety of recipes from celebrity chefs and food experts. Whether you’re looking for quick weeknight meals or intricate gourmet dishes, Food Network has something for everyone. You can also find helpful cooking tips, videos, and behind-the-scenes looks at cooking shows.</p>
+        <ul>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=chicken&recipe_kind=fn">Chicken</a></li>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=beef&recipe_kind=fn">Beef</a></li>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=egg&recipe_kind=fn">Egg</a></li>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=christmas&recipe_kind=fn">Christmas</a></li>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=fish&recipe_kind=fn">Fish</a></li>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=grill&recipe_kind=fn">Grill</a></li>
+        </ul>
+        <h3>Epicurious.com</h3>
+        <p><a href="https://www.epicurious.com" target="_blank">Epicurious.com</a> offers a huge collection of recipes, including healthy, family-friendly, and seasonal dishes. They feature curated collections based on trending food topics, popular ingredients, and specific diets. Epicurious is known for providing tested recipes with reviews from real users, making it a trusted source for home cooks of all levels.</p>
+        <ul>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=chicken&recipe_kind=epi">Chicken</a></li>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=beef&recipe_kind=epi">Beef</a></li>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=egg&recipe_kind=epi">Egg</a></li>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=christmas&recipe_kind=epi">Christmas</a></li>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=fish&recipe_kind=epi">Fish</a></li>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=grill&recipe_kind=epi">Grill</a></li>
+        </ul>
+        <h3>Allrecipes.com</h3>
+        <p><a href="https://www.allrecipes.com" target="_blank">Allrecipes.com</a> is a community-driven platform where home cooks share their favorite recipes. This site features a wide variety of dishes, from comfort food to exotic international meals. Allrecipes.com is highly regarded for its large collection of user-rated recipes, allowing you to choose the best dishes based on reviews from other cooks.</p>
+        <p>On our site, you can explore a wide variety of recipes across several categories:</p>
+        <ul>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=chicken&recipe_kind=ar">Chicken</a></li>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=beef&recipe_kind=ar">Beef</a></li>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=egg&recipe_kind=ar">Egg</a></li>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=christmas&recipe_kind=ar">Christmas</a></li>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=fish&recipe_kind=ar">Fish</a></li>
+            <li><a href="{% url 'recipes_combined:recipes_list' %}?category=grill&recipe_kind=ar">Grill</a></li>
+        </ul>
+        <p>Please note that only logged-in users can add comments on the recipes. If you're not logged in, you can still explore the recipes, but to participate in the discussions, please log in to your account.</p>
+    </div>
+</div>
+{% endblock %}
