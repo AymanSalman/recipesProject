@@ -1,0 +1,21 @@
+{% extends 'base_layout.html' %}
+{% block content %}
+<div class="login-container">
+    <h1 class="login-header">Login</h1>
+    <div class="panel-container">
+        <div class="welcome-panel">
+            <h2>Welcome to Login</h2>
+            <p>Don't have an account?</p>
+            <a href="{% url 'accounts:signup' %}" class="signup-button">Sign Up</a>
+        </div>
+        <div class="login-form-wrapper">
+            <h1>Login</h1>
+            <form class="site-login-form" action="{% url 'accounts:login' %}" method="post">
+                {% csrf_token %}
+                {{ form }}
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
